@@ -1,0 +1,129 @@
+No sdm Option specified, using standard miSeq sdm options: /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0/configs/sdm_miSeq.txt
+Using Silva SSU ref seq database.
+--------------------------------------------------------------------------------
+ 00:00:00 LotuS 2.23
+          COMMAND
+          perl /home/microbiome/anaconda3/envs/lotus2/bin/lotus2 -i
+          lotus_cp_raw/ -m map_new.txt -o Res1 -refDB SLV,GG,HITdb
+          -CL dada2 -taxAligner lambda -verbosity 3 -t 20
+--------------------------------------------------------------------------------
+WARNING:: No forward PCR primer for amplicon found in mapping file (column header "ForwardPrimer". This might invalidate chimera checks).
+--------------------------------------------------------------------------------
+ 00:00:10 Reading mapping file
+          Sequence files are indicated in mapping file.
+          Switching to paired end read mode
+--------------------------------------------------------------------------------
+------------ I/O configuration --------------
+Input       lotus_cp_raw/
+Output      Res1
+SDM options /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0/configs/sdm_miSeq.txt
+TempDir     Res1/tmpFiles/
+------------ Configuration LotuS --------------
+de novo sequence clustering with DADA2 into ASV's
+Sequencing platform     miseq
+Amplicon target         bacteria, SSU
+Dereplication filter    8:1,4:2,3:3
+Clustering algorithm    DADA2 into ASV's
+Read mapping (non tax)  minimap2
+ASV clustering based on sequence error profiles (-dada2seed 0)
+Precluster read merging No
+Ref Chimera checking    Yes (DB=/home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//rdp_gold.fa, -chim_skew 2)
+deNovo Chimera check    Yes
+Tax assignment          Lambda (-LCA_frac 0.8, -LCA_cover 0.5, -LCA_idthresh 97,95,93,91,88,78,0)
+ReferenceDatabase       SILVA,greengenes,HITdb
+RefDB location          /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//SLV_138.1_SSU.fasta,/home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//gg_13_5.fasta,/home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//HITdb/HITdb_sequences.fna
+ASV phylogeny           Yes (mafft, fasttree2)
+Unclassified ASV's      Kept in matrix
+--------------------------------------------
+--------------------------------------------------------------------------------
+ 00:00:10 Demultiplexing, filtering, dereplicating input files, this
+          might take some time..
+          check progress at Res1/LotuSLogS/LotuS_progout.log
+ 00:27:34 Finished primary read processing with sdm:
+          Reads processed: 65,503,292; 65,503,292 (pair 1;pair 2)
+          Accepted (High qual): 19,732,231; 9,996,834 (10,858,358;
+          24,680,738 end-trimmed)
+          Accepted (Mid qual): 19;296
+          Rejected: 45,771,042; 55,506,162
+          Dereplication block 0: 205,706 unique sequences (avg size
+          1.1e+02; 21,920,776 counts)
+          For an extensive report see Res1/LotuSLogS//demulti.log
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ 00:27:34 DADA2 ASV clustering
+          check progress at Res1/LotuSLogS/LotuS_progout.log
+--------------------------------------------------------------------------------
+ 00:37:41 Starting backmapping of 
+            - dereplicated reads
+            - low-abundant dereplicated Reads
+            - mid-quality reads
+          to ASV's using minimap2
+ 00:39:30 Backmapping dereplicated reads via minimap2: 
+          Backmapping  mid qual reads: 
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ 00:39:30 Extending and merging pairs of ASV Seeds
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ 00:39:49 Found 8700 fasta seed sequences based on seed extension
+          and read merging
+--------------------------------------------------------------------------------
+No ref based chimera detection
+--------------------------------------------------------------------------------
+ 00:39:49 Found 514 ASV's using minimap2 (phiX.0: /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//phiX.fasta)
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ 00:39:50 Postfilter:
+          Extended logs active, contaminant and chimeric matrix will be created.
+          After filtering 5111 ASV's (23131381 reads) remaining in matrix.
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ 00:39:52 Assigning taxonomy against /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//SLV_138.1_SSU.fasta
+          using LAMBDA
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ 00:44:06 Assigning taxonomy against /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//gg_13_5.fasta
+          using LAMBDA
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ 00:55:53 Assigning taxonomy against /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//HITdb/HITdb_sequences.fna
+          using LAMBDA
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ 00:56:10 Calculating Taxonomic Abundance Tables from SILVA greengenes
+          HITdb assignments
+--------------------------------------------------------------------------------
+
+Calculating higher abundance levels
+Adding 1731 unclassified ASV's to output matrices
+Total reads in matrix: 23131381
+TaxLvl	%Assigned_Reads	%Assigned_ASVs
+Phylum	91	96
+Class	89	85
+Order	89	81
+Family	87	78
+Genus	84	72
+Species	44	60
+
+--------------------------------------------------------------------------------
+ 00:56:19 Building tree (fasttree) and aligning (mafft) OTUs
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ 01:15:00 LotuS2 finished. Output in:
+          Res1
+                    Next steps:          
+          - Phyloseq: load Res1/phyloseq.Rdata directly with the phyloseq
+          package in R
+          - Phylogeny: ASV phylogentic tree available in Res1/OTUphylo.nwk
+          - .biom: Res1/OTU.biom contains biom formatted output
+          - Alpha diversity/rarefaction curves: rtk (available as
+          R package or in bin/rtk)
+          - LotuSLogS/ contains run statistics (useful for describing
+          data/amount of reads/quality and citations to programs used
+          - Tutorial: Visit http://lotus2.earlham.ac.uk for a numerical
+          ecology tutorial
+--------------------------------------------------------------------------------
+
+The following WARNINGS occured:
+WARNING:: No forward PCR primer for amplicon found in mapping file (column header "ForwardPrimer". This might invalidate chimera checks).
+

@@ -1,0 +1,4 @@
+Dereplication log:
+Dereplication of SamplingRun a:
+Dereplication: 205,706 unique sequences (avg size 1.1e+02; 21,920,776 counts)
+1,102,500/1,308,206 not passing derep conditions (1,350,557 counts; 8:1,4:2,3:3)

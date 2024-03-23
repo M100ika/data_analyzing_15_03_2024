@@ -1,0 +1,46 @@
+[cmd] rm -f -r Res1/tmpFiles/
+[cmd] mkdir -p Res1/tmpFiles/
+[cmd] mkdir -p Res1/tmpFiles//demultiplexed/
+[cmd] cp /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0/configs/sdm_miSeq.txt Res1/primary
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/sdm  -i_path lotus_cp_raw/  -o_fna Res1/tmpFiles//demulti.1.fna,Res1/tmpFiles//demulti.2.fna  -o_fna2 Res1/tmpFiles//demulti.1.add.fna,Res1/tmpFiles//demulti.2.add.fna  -sample_sep ___  -log Res1/LotuSLogS//demulti.log -map Res1/primary/in.map   -options /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0/configs/sdm_miSeq.txt  -pairedDemulti 1 -pairedRD_HD_out 0 -derep_format fq -derepPerSR 1 -DemultiBPperSR 1e8  -o_demultiplex Res1/tmpFiles//demultiplexed/  -o_dereplicate Res1/tmpFiles//derep.fas -dere_size_fmt 0 -min_derep_copies 8:1,4:2,3:3 -suppressOutput 1   -o_qual_offset 33 -paired 2  -oneLineFastaFormat 1   -threads 20 
+[cmd] mkdir -p Res1/LotuSLogS//SDMperFile/
+[cmd]  mv Res1/LotuSLogS//demulti.log0* Res1/LotuSLogS//SDMperFile/
+[cmd] tar zcf Res1/LotuSLogS//SDMperFile.tar.gz Res1/LotuSLogS//SDMperFile/
+[cmd]  rm -r Res1/LotuSLogS//SDMperFile/
+[cmd] rm -f Res1/tmpFiles//finalOTU.uc Res1/tmpFiles//finalOTU.ADD.paf Res1/tmpFiles//finalOTU.ADDREF.paf Res1/tmpFiles//finalOTU.REST.paf Res1/tmpFiles//finalOTU.RESTREF.paf
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/Rscript  --vanilla  /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0/bin/R/dada2_pip.R Res1/tmpFiles//demultiplexed/ Res1/tmpFiles/ 0 20 Res1/primary/in.map Res1/tmpFiles//derep.fas
+[cmd] mv -f Res1/tmpFiles//*.pdf Res1/LotuSLogS/
+[cmd] cp Res1/tmpFiles//dada2.uc Res1/tmpFiles//finalOTU.uc
+[cmd] rm -f Res1/tmpFiles//tmp_otu.fa
+[cmd] cp Res1/tmpFiles//uniqueSeqs.fna Res1/tmpFiles//tmp_otu.fa
+[cmd] rm -rf Res1/tmpFiles//demultiplexed/
+[cmd] rm -f Res1/tmpFiles//finalOTU.paf
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/minimap2  -x sr --sr -u both --secondary=no -N 30 -c   -t 20 -o Res1/tmpFiles//finalOTU.paf  Res1/tmpFiles//tmp_otu.fa Res1/tmpFiles//derep.fas
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/minimap2  -x sr --sr -u both --secondary=no -N 30 -c  -t 20 -o Res1/tmpFiles//add.paf Res1/tmpFiles//tmp_otu.fa Res1/tmpFiles//demulti.1.add.fna.singl 
+[cmd] cat Res1/tmpFiles//add.paf >> Res1/tmpFiles//finalOTU.ADD.paf
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/sdm -i Res1/tmpFiles//derep.fas.rest -o_fna Res1/tmpFiles//derep.fas.rest1
+[cmd] rm -f Res1/tmpFiles//derep.fas.rest
+[cmd] mv Res1/tmpFiles//derep.fas.rest1 Res1/tmpFiles//derep.fas.rest
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/minimap2  -x sr --sr -u both --secondary=no -N 30 -c  -t 20 -o Res1/tmpFiles//rests.paf Res1/tmpFiles//tmp_otu.fa Res1/tmpFiles//derep.fas.rest 
+[cmd] cat Res1/tmpFiles//rests.paf >> Res1/tmpFiles//finalOTU.REST.paf
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/sdm -i_fastq Res1/tmpFiles//derep.1.hq.fq,Res1/tmpFiles//derep.2.hq.fq -o_fastq Res1/tmpFiles//otu_seeds.1.fq,Res1/tmpFiles//otu_seeds.2.fq  -optimalRead2Cluster Res1/tmpFiles//finalOTU.paf  -paired 2 -sample_sep ___ -derep_map Res1/tmpFiles//derep.map -options /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0/configs/sdm_miSeq.txt -merge_pairs_seed 1   -o_qual_offset 33 -mergedPairs 0 -log Res1/LotuSLogS//SeedExtensionStats.txt  -OTU_fallback Res1/tmpFiles//tmp_otu.fa -ucAdditionalCounts Res1/tmpFiles//finalOTU.ADD.paf -ucAdditionalCounts1 Res1/tmpFiles//finalOTU.REST.paf -otu_matrix Res1/OTU.txt -id 97 -minQueryCov 0.8  -count_chimeras F 
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/minimap2   -x sr --sr -u both --secondary=no -N 30 -c  -t 20 -o Res1/tmpFiles//otu_seeds.fna.phiX.0.cont_hit.paf /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//phiX.fasta Res1/tmpFiles//otu_seeds.fna
+[cmd] gzip Res1/tmpFiles//otu_seeds.fna.phiX.0.cont_hit.paf
+mv Res1/tmpFiles//otu_seeds.fna.phiX.0.cont_hit.paf.gz Res1/LotuSLogS/
+[cmd] cp Res1/tmpFiles//otu_seeds.fna Res1/OTU.fna
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/lambda -t 20 -id 75 -nm 200 -p blastn -e 1e-8 -so 7 -sl 16 -sd 1 -b 5 -pd on -q Res1/OTU.fna -d /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//SLV_138.1_SSU.fasta -o Res1/tmpFiles//tax.m8 -oc 'qseqid sseqid pident length mismatch gapopen qstart qend sstart send qlen'
+[cmd] mv Res1/tmpFiles//tax.m8 Res1/tmpFiles//tax.0.blast
+[cmd] cp Res1/tmpFiles//tax.0.blast Res1/ExtraFiles//
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/lambda -t 20 -id 75 -nm 200 -p blastn -e 1e-8 -so 7 -sl 16 -sd 1 -b 5 -pd on -q Res1/OTU.fna -d /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//gg_13_5.fasta -o Res1/tmpFiles//tax.m8 -oc 'qseqid sseqid pident length mismatch gapopen qstart qend sstart send qlen'
+[cmd] mv Res1/tmpFiles//tax.m8 Res1/tmpFiles//tax.1.blast
+[cmd] cp Res1/tmpFiles//tax.1.blast Res1/ExtraFiles//
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/lambda -t 20 -id 75 -nm 200 -p blastn -e 1e-8 -so 7 -sl 16 -sd 1 -b 5 -pd on -q Res1/OTU.fna -d /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//HITdb/HITdb_sequences.fna -o Res1/tmpFiles//tax.m8 -oc 'qseqid sseqid pident length mismatch gapopen qstart qend sstart send qlen'
+[cmd] mv Res1/tmpFiles//tax.m8 Res1/tmpFiles//tax.2.blast
+[cmd] cp Res1/tmpFiles//tax.2.blast Res1/ExtraFiles//
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/LCA  -i Res1/tmpFiles//tax.0.blast,Res1/tmpFiles//tax.1.blast,Res1/tmpFiles//tax.2.blast -r /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//SLV_138.1_SSU.tax,/home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//gg_13_5_taxonomy,/home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0//DB//HITdb/HITdb_taxonomy.txt -o Res1/hiera_BLAST.txt  -LCAfrac 0.8  -cover 0.5 -minAlignLen 70 -id 97,95,93,91,88,78,0
+[cmd] mkdir -p Res1/higherLvl/
+[cmd] cp Res1/OTU.txt Res1/higherLvl/
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/mafft --thread 20 --quiet Res1/OTU.fna > Res1/ExtraFiles//OTU.MSA.fna
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/FastTreeMP -nt -gtr -no2nd -spr 4 -log Res1/LotuSLogS//fasttree.log -quiet -out Res1/OTUphylo.nwk Res1/ExtraFiles//OTU.MSA.fna
+[cmd] /home/microbiome/anaconda3/envs/lotus2/bin/Rscript  --vanilla  /home/microbiome/anaconda3/envs/lotus2/share/lotus2-2.23-0/bin/R/l2phyloseq.R Res1/OTU.txt Res1/hiera_BLAST.txt Res1/primary/in.map 1 Res1/OTUphylo.nwk
+[cmd] rm -rf Res1/tmpFiles/
