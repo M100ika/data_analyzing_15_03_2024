@@ -1,0 +1,6 @@
+	AstReg	KokReg	SemReg	UstNis	UstReg
+AstReg	1.0	0.0	0.0	0.0002	0.0111
+KokReg	0.0	1.0	0.0018	0.9999	0.0
+SemReg	0.0	0.0018	1.0	0.0046	0.0
+UstNis	0.0002	0.9999	0.0046	1.0	0.0
+UstReg	0.0111	0.0	0.0	0.0	1.0

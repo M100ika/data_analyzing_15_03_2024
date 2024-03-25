@@ -1,0 +1,11 @@
+	group1	group2	meandiff	p-adj	lower	upper	reject
+0	AstReg	KokReg	0.4831	0.0002	0.1739	0.7923	True
+1	AstReg	SemReg	0.0288	0.9995	-0.3311	0.3886	False
+2	AstReg	UstNis	0.2357	0.3781	-0.1242	0.5955	False
+3	AstReg	UstReg	-0.0634	0.9939	-0.4843	0.3574	False
+4	KokReg	SemReg	-0.4544	0.0097	-0.8332	-0.0755	True
+5	KokReg	UstNis	-0.2474	0.3809	-0.6263	0.1314	False
+6	KokReg	UstReg	-0.5465	0.0061	-0.9837	-0.1094	True
+7	SemReg	UstNis	0.2069	0.6625	-0.2143	0.6281	False
+8	SemReg	UstReg	-0.0922	0.984	-0.5665	0.3822	False
+9	UstNis	UstReg	-0.2991	0.4181	-0.7735	0.1753	False
